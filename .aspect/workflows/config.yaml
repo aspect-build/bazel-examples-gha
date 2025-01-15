@@ -3,6 +3,9 @@ tasks:
   - checkout:
       update_strategy: rebase
   - lint:
+      targets:
+        - //logger/cli/...
+      only_annotate_changed_regions: false
   - format:
   - test:
 notifications:
