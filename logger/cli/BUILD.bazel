@@ -1,5 +1,5 @@
 load("@pip//:requirements.bzl", "requirement")
-load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 load("@rules_uv//uv:pip.bzl", "pip_compile")
 
 exports_files(
@@ -11,6 +11,12 @@ py_binary(
     name = "cli",
     srcs = ["__main__.py"],
     main = "__main__.py",
+    deps = [requirement("requests")],
+)
+
+py_library(
+    name = "new_file",
+    srcs = ["__main__2.py"],
     deps = [requirement("requests")],
 )
 
