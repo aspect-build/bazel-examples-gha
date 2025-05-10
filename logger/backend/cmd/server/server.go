@@ -24,9 +24,9 @@ var (
 
 // GRPC Server
 func startGrpc() error {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp")
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("failed to listen: %s", err)
 	}
 	s := grpc.NewServer()
 	pb.RegisterLoggerServer(s, &server{})
