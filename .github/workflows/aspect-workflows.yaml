@@ -3,7 +3,7 @@ name: Aspect Workflows
 on:
     # Triggers the workflow on main and on pull request to main
     push:
-        branches: [main]
+        branches: [main, repro_6sense_issue]
     pull_request:
         branches: [main]
 
