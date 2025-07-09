@@ -69,9 +69,16 @@ jobs:
     runs-on: [self-hosted, aspect-workflows, "${{ inputs.queue }}"]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - id: rosetta-generate
         run: |
-          ROSETTA_RESULT=$( \
+          echo "Current HEAD: $(git rev-parse HEAD)"
+          echo "Available tags: $(git tag)"
+          echo "Tags at HEAD: $(git tag --points-at HEAD)"
+          COMMIT_TAG=$(git tag --points-at HEAD | head -n 1)
+          echo "COMMIT_TAG: $COMMIT_TAG"
+          ROSETTA_RESULT=$(GITHUB_REF_NAME=${COMMIT_TAG} \
             rosetta steps \
             --config ${{ inputs.aspect-config }} \
             --gha_task generate \
@@ -94,7 +101,7 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: ${{ !endsWith(matrix.job, 'lint') && 1 || 2 }}
+          fetch-depth: 0
       - name: Agent health check
         # Set RUNNER_TRACKER_ID="" to prevent GitHub Actions from killing the Bazel server started
         # during health check when "Cleaning up orphan processes" in the "Complete job" step.

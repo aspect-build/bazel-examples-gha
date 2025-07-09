@@ -9,6 +9,8 @@ tasks:
       targets:
         - //...
         - -//speller/...
+        - -//.circleci/...
+        - -//angular/projects/...
       bazel:
         flags:
           -  --test_tag_filters=-skip-on-aspect-workflows
@@ -23,5 +25,10 @@ tasks:
         - --config=release
       rules:
         - deliverable: 'kind("oci_push rule", //...)'
+        - deliverable: 'kind("oci_push rule", //...)'
+          condition:
+            only_on_change: false
+            tags:
+              - 'enable-delivery-.*'  # Regex to match any tag starting with enable-delivery
 notifications:
   github: {}
