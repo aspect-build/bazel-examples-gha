@@ -9,19 +9,24 @@ tasks:
       targets:
         - //...
         - -//speller/...
+        - -//.circleci/...
+        - -//angular/projects/...
       bazel:
         flags:
           -  --test_tag_filters=-skip-on-aspect-workflows
       coverage:
         codecov_upload: true
   - delivery:
-      branches:
-        - main
-        - 'release-.*'
       auto_deliver: true
       stamp_flags:
         - --config=release
       rules:
-        - deliverable: 'kind("oci_push rule", //...)'
+        - deliverable: 'kind("gha_delivery_trigger rule", //...)'
+          condition:
+            branches:
+              - main
+              - 'release-.*'
+              - gha_trigger_delivery_rule
+
 notifications:
   github: {}

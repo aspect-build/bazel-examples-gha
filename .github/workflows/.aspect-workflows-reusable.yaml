@@ -94,7 +94,10 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: ${{ !endsWith(matrix.job, 'lint') && 1 || 2 }}
+            # Fetch all history for all tags and branches, so the --workspace_status_command can find
+            # any tags that it needs for `git describe`.
+            # See https://github.com/actions/checkout#Fetch-all-history-for-all-tags-and-branches
+          fetch-depth: 0
       - name: Agent health check
         # Set RUNNER_TRACKER_ID="" to prevent GitHub Actions from killing the Bazel server started
         # during health check when "Cleaning up orphan processes" in the "Complete job" step.
@@ -169,14 +172,10 @@ jobs:
           functionalities: search # Disable searching for coverage reports. If enabled, it gets confused
           # by the bazel convenience symlinks and finds the same coverage report
           # under bazel-out and {workspace}/bazel-out.
-      - name: Trigger delivery
-        # This uses the following API: https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
-        run: |
-          curl \
-            -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ inputs.delivery-workflow }}/dispatches \
-            -d "{\"ref\":\"${{ fromJson(needs.setup.outputs.cfg).workflows_config[matrix.job].branch }}\",\"inputs\":{\"delivery_commit\":\"${GITHUB_SHA}\",\"workspace\":\"${{ fromJson(needs.setup.outputs.cfg).workflows_config[matrix.job].workspace }}\"}}"
-        shell: bash
-        if: fromJson(needs.setup.outputs.cfg).workflows_config[matrix.job].delivery
+      - name: Run delivery
+        uses: aspect-build/workflows-action@5.12.22
+        with:
+            task: delivery
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: fromJson(needs.setup.outputs.cfg).workflows_config[matrix.job].delivery && fromJson(needs.setup.outputs.cfg).workflows_config[matrix.job].task == 'test'

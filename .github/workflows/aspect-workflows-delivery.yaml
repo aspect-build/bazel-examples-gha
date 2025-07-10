@@ -48,3 +48,4 @@ jobs:
               env:
                   ASPECT_WORKFLOWS_DELIVERY_COMMIT: ${{ inputs.delivery_commit }}
                   ASPECT_WORKFLOWS_DELIVERY_TARGETS: ${{ inputs.delivery_targets }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

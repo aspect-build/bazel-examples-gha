@@ -4,6 +4,8 @@ load("@container_structure_test//:defs.bzl", "container_structure_test")
 load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@tar.bzl", "mutate", "tar")
+load(":directory_hashes.bzl", "directory_hashes")
+load(":gha_delivery_trigger.bzl", "gha_delivery_trigger")
 
 go_library(
     name = "oci_go_image_lib",
@@ -95,4 +97,17 @@ oci_push(
         "24h",
     ],
     repository = "ttl.sh/aspect-build/oci_go_image_example",
+)
+
+directory_hashes(
+    name = "image_hashes",
+    src = ":transitioned_image"
+)
+
+gha_delivery_trigger(
+    name = "trigger_delivery",
+    hash = ":image_hashes",
+    target = "//oci_go_image:push",
+    repository = "aspect-build/bazel-examples-gha",
+    workflow = "aspect-workflows-delivery.yaml",
 )
