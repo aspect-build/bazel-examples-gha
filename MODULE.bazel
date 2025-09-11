@@ -86,7 +86,7 @@ use_repo(multitool, "multitool")
 llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
 llvm.toolchain(
     llvm_versions = {
-        "": "15.0.6",
+        "": "15.0.5",
         "darwin-aarch64": "15.0.7",
         "darwin-x86_64": "15.0.7",
     },
@@ -106,7 +106,7 @@ use_repo(buf, "rules_buf_toolchains")
 protoc = use_extension("@toolchains_protoc//protoc:extensions.bzl", "protoc")
 protoc.toolchain(
     google_protobuf = "com_google_protobuf",
-    version = "v28.2",
+    version = "v29.0",
 )
 use_repo(protoc, "com_google_protobuf", "toolchains_protoc_hub")
 
@@ -163,7 +163,7 @@ use_repo(types, "pip_types")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
-        "com.google.protobuf:protobuf-java:4.28.0",
+        "com.google.protobuf:protobuf-java:4.27.0",
         "io.grpc:grpc-all:1.51.1",
     ],
     lock_file = "//:maven_install.json",
