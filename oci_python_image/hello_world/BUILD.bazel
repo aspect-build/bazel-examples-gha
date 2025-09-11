@@ -14,7 +14,7 @@ py_library(
     imports = [".."],
     visibility = ["//oci_python_image:__subpackages__"],
     deps = [
-        # "@pip//cowsay",
+        "@pip//cowsay",
     ],
 )
 
