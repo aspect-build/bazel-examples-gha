@@ -2,7 +2,7 @@ load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_filegroup")
 load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_image_layer", "py_library", "py_pytest_main")
 load("@container_structure_test//:defs.bzl", "container_structure_test")
 load("@pip//:requirements.bzl", "requirement")
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@rules_python//python:defs.bzl", "py_test")
 
 py_library(
@@ -148,3 +148,14 @@ py_test(
         "@pip//testcontainers",
     ],
 )
+
+oci_push(
+    name = "push",
+    image = ":platform_image",
+    remote_tags = [
+        "latest",
+        "24h",
+    ],
+    repository = "ttl.sh/aspect-build/oci_py_image_example",
+)
+
