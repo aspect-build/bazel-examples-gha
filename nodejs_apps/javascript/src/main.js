@@ -7,4 +7,4 @@ Shared.shared();
 Two();
 console.log(IQuote.getRandomQuote());
 console.log(TQuote.randomQuote());
-console.log("test PR")
+console.log('test PR');
