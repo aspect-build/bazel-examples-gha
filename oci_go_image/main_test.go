@@ -20,3 +20,11 @@ func TestCompareInts(t *testing.T) {
 		t.Error("expected a diff containing '42' but got", result)
 	}
 }
+
+func TestCompareIntsEqual(t *testing.T) {
+	result := CompareInts(1, 1)
+
+	if result != "these should differ" {
+		t.Error("expected ints to differ but they were equal")
+	}
+}
