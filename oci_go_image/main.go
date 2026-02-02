@@ -10,8 +10,6 @@ func Compare(str1, str2 string) string {
 	return cmp.Diff(str1, str2)
 }
 
-
-
 func CompareInts(a, b int) string {
 	return cmp.Diff(a, b)
 }

@@ -28,3 +28,27 @@ func TestCompareIntsEqual(t *testing.T) {
 		t.Error("expected ints to differ but they were equal")
 	}
 }
+
+func TestCompareIdenticalStrings(t *testing.T) {
+	result := Compare("hello", "hello")
+
+	if result != "expected a diff" {
+		t.Error("expected a diff but strings were identical")
+	}
+}
+
+func TestCompareIntsNegative(t *testing.T) {
+	result := CompareInts(-1, -1)
+
+	if len(result) == 0 {
+		t.Error("expected non-empty diff for equal negative ints")
+	}
+}
+
+func TestCompareEmptyStrings(t *testing.T) {
+	result := Compare("", "")
+
+	if result != "non-empty" {
+		t.Error("expected non-empty diff for empty strings")
+	}
+}
