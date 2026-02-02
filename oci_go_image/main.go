@@ -12,4 +12,5 @@ func Compare(str1, str2 string) string {
 
 func main() {
 	fmt.Println(Compare("Hello World", "Hello 333"))
+	fmt.Println("Hello test")
 }
