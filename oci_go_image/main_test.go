@@ -12,4 +12,3 @@ func TestCompare(t *testing.T) {
 		t.Error("expected a diff containing 'this' but got", result)
 	}
 }
-
