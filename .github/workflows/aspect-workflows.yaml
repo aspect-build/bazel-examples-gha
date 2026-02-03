@@ -17,8 +17,43 @@ concurrency:
     cancel-in-progress: ${{ github.ref_name != 'main' }}
 
 jobs:
-    aspect-workflows:
-        name: Aspect Workflows
-        uses: ./.github/workflows/.aspect-workflows-reusable.yaml
-        with:
-            queue: aspect-small
+    test:
+        name: Test
+        runs-on: [self-hosted, aspect-workflows, aspect-default]
+        steps:
+            - name: Workflows environment
+              run: /etc/aspect/workflows/bin/configure_workflows_env
+            - name: Clone repo
+              uses: actions/checkout@v4
+              with:
+                    fetch-depth: 1
+            - name: Agent health check
+              # Set RUNNER_TRACKER_ID="" to prevent GitHub Actions from killing the Bazel server started during health check when "Cleaning up orphan processes" in the "Complete job" step. See https://github.com/actions/runner/issues/598.
+              run: RUNNER_TRACKER_ID="" && /etc/aspect/workflows/bin/agent_health_check
+            - name: Test
+              run: |
+                # Clear artifact directories
+                rm -rf /workflows/artifacts /workflows/testlogs
+                # Set Aspect Workflows common bazel flags in /etc/bazel.bazelrc
+                rosetta bazelrc > /etc/bazel.bazelrc
+                # Run a query
+                bazel query 'kind("go_test rule", //...)' > targets.out
+                cat targets.out
+                # Generate a dynamic Aspect Workflows config file from the query results
+                /etc/aspect/workflows/bin/jq -R -s 'split("\n") | map(select(. != "")) | {tasks: [{test: {targets: .}}]}' targets.out > .aspect/workflows/dynamic_config.yaml
+                cat .aspect/workflows/dynamic_config.yaml
+                # Run the test task from the dynamically generated config file
+                rosetta run --config .aspect/workflows/dynamic_config.yaml test
+                # Alternately you could escape from Aspect Workflows tasks and call bazel test directly
+                bazel test $(cat targets.out)
+              shell: bash
+            - name: Upload artifacts
+              # The `always()` condition makes this step run even if a previous step failed. Setting `continue-on-error: true` on previous steps isn't ideal as the UI will flag them as having passed even if they failed.
+              if: ${{ always() }}
+              uses: actions/upload-artifact@v4
+              with:
+                  name: test.artifact
+                  path: |
+                    /workflows/artifacts/**
+                    /workflows/testlogs/**
+                  overwrite: true
