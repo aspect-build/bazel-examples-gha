@@ -14,14 +14,11 @@ test:
     - /etc/aspect/workflows/bin/gitlab_section_start "agent_health_check" "Agent health check"
     - /etc/aspect/workflows/bin/agent_health_check
     - /etc/aspect/workflows/bin/gitlab_section_end "agent_health_check"
-    - /etc/aspect/workflows/bin/gitlab_section_start "checkout_health" "Checkout health"
-    - rosetta run checkout
-    - /etc/aspect/workflows/bin/gitlab_section_end "checkout_health"
     - /etc/aspect/workflows/bin/gitlab_section_start "prepare_archive_directories" "Prepare archive directories"
     - rm -rf /workflows/testlogs .workflows/testlogs && mkdir -p /workflows/testlogs .workflows && ln -s /workflows/testlogs .workflows/testlogs && rm -rf /workflows/artifacts .workflows/artifacts && mkdir -p /workflows/artifacts .workflows && ln -s /workflows/artifacts .workflows/artifacts
     - /etc/aspect/workflows/bin/gitlab_section_end "prepare_archive_directories"
     - /etc/aspect/workflows/bin/gitlab_section_start "test" "Test"
-    - rosetta run test
+    - rosetta run test --config .aspect/workflows/config.yaml --workspace .
     - /etc/aspect/workflows/bin/gitlab_section_end "test"
   tags:
     - aspect-workflows
@@ -43,14 +40,11 @@ format:
     - /etc/aspect/workflows/bin/gitlab_section_start "agent_health_check" "Agent health check"
     - /etc/aspect/workflows/bin/agent_health_check
     - /etc/aspect/workflows/bin/gitlab_section_end "agent_health_check"
-    - /etc/aspect/workflows/bin/gitlab_section_start "checkout_health" "Checkout health"
-    - rosetta run checkout
-    - /etc/aspect/workflows/bin/gitlab_section_end "checkout_health"
     - /etc/aspect/workflows/bin/gitlab_section_start "prepare_archive_directories" "Prepare archive directories"
     - rm -rf /workflows/testlogs .workflows/testlogs && mkdir -p /workflows/testlogs .workflows && ln -s /workflows/testlogs .workflows/testlogs && rm -rf /workflows/artifacts .workflows/artifacts && mkdir -p /workflows/artifacts .workflows && ln -s /workflows/artifacts .workflows/artifacts
     - /etc/aspect/workflows/bin/gitlab_section_end "prepare_archive_directories"
     - /etc/aspect/workflows/bin/gitlab_section_start "format" "Format"
-    - rosetta run format
+    - rosetta run format --config .aspect/workflows/config.yaml --workspace .
     - /etc/aspect/workflows/bin/gitlab_section_end "format"
   tags:
     - aspect-workflows
@@ -72,14 +66,11 @@ lint:
     - /etc/aspect/workflows/bin/gitlab_section_start "agent_health_check" "Agent health check"
     - /etc/aspect/workflows/bin/agent_health_check
     - /etc/aspect/workflows/bin/gitlab_section_end "agent_health_check"
-    - /etc/aspect/workflows/bin/gitlab_section_start "checkout_health" "Checkout health"
-    - rosetta run checkout
-    - /etc/aspect/workflows/bin/gitlab_section_end "checkout_health"
     - /etc/aspect/workflows/bin/gitlab_section_start "prepare_archive_directories" "Prepare archive directories"
     - rm -rf /workflows/testlogs .workflows/testlogs && mkdir -p /workflows/testlogs .workflows && ln -s /workflows/testlogs .workflows/testlogs && rm -rf /workflows/artifacts .workflows/artifacts && mkdir -p /workflows/artifacts .workflows && ln -s /workflows/artifacts .workflows/artifacts
     - /etc/aspect/workflows/bin/gitlab_section_end "prepare_archive_directories"
     - /etc/aspect/workflows/bin/gitlab_section_start "lint" "Lint"
-    - rosetta run lint
+    - rosetta run lint --config .aspect/workflows/config.yaml --workspace .
     - /etc/aspect/workflows/bin/gitlab_section_end "lint"
   tags:
     - aspect-workflows
@@ -104,17 +95,14 @@ delivery:
     - /etc/aspect/workflows/bin/gitlab_section_start "agent_health_check" "Agent health check"
     - /etc/aspect/workflows/bin/agent_health_check
     - /etc/aspect/workflows/bin/gitlab_section_end "agent_health_check"
-    - /etc/aspect/workflows/bin/gitlab_section_start "checkout_health" "Checkout health"
-    - rosetta run checkout
-    - /etc/aspect/workflows/bin/gitlab_section_end "checkout_health"
     - /etc/aspect/workflows/bin/gitlab_section_start "prepare_archive_directories" "Prepare archive directories"
     - rm -rf /workflows/testlogs .workflows/testlogs && mkdir -p /workflows/testlogs .workflows && ln -s /workflows/testlogs .workflows/testlogs && rm -rf /workflows/artifacts .workflows/artifacts && mkdir -p /workflows/artifacts .workflows && ln -s /workflows/artifacts .workflows/artifacts
     - /etc/aspect/workflows/bin/gitlab_section_end "prepare_archive_directories"
     - /etc/aspect/workflows/bin/gitlab_section_start "delivery_manifest" "Delivery Manifest"
-    - rosetta run delivery_manifest
+    - rosetta run delivery_manifest --config .aspect/workflows/config.yaml --workspace .
     - /etc/aspect/workflows/bin/gitlab_section_end "delivery_manifest"
     - /etc/aspect/workflows/bin/gitlab_section_start "delivery" "Delivery"
-    - rosetta run delivery
+    - rosetta run delivery --config .aspect/workflows/config.yaml --workspace .
     - /etc/aspect/workflows/bin/gitlab_section_end "delivery"
   tags:
     - aspect-workflows
@@ -137,7 +125,7 @@ warming:
     - /etc/aspect/workflows/bin/agent_health_check
     - /etc/aspect/workflows/bin/gitlab_section_end "agent_health_check"
     - /etc/aspect/workflows/bin/gitlab_section_start "warming" "Warming"
-    - rosetta run warming --workspace .
+    - rosetta run warming --config .aspect/workflows/config.yaml --workspace .
     - /etc/aspect/workflows/bin/gitlab_section_end "warming"
     - /etc/aspect/workflows/bin/gitlab_section_start "archive_warming_tars" "Archive warming tars"
     - /etc/aspect/workflows/bin/warming_archive

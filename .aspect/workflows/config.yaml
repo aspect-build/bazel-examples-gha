@@ -1,21 +1,27 @@
 # See https://docs.aspect.build/workflows/configuration
 tasks:
-  - checkout:
-      update_strategy: rebase
   - gazelle:
   - buildifier:
   - lint:
   - format:
   - test:
+      id: test_0
       targets:
         - //...
+        - -//angular/...
         - -//speller/...
       bazel:
         flags:
-          -  --config=rbe
-          -  --test_tag_filters=-skip-on-aspect-workflows
-      coverage:
-        codecov_upload: true
+          - --config=rbe
+          - --test_tag_filters=-skip-on-aspect-workflows
+  - test:
+      id: test_1
+      targets:
+        - //angular/...
+      bazel:
+        flags:
+          - --config=rbe
+          - --test_tag_filters=-skip-on-aspect-workflows
   - delivery:
       branches:
         - main
