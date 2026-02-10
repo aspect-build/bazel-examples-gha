@@ -20,11 +20,11 @@ go_test(
     embed = [":oci_go_image_lib"],
 )
 
-go_binary(
-    name = "app",
-    embed = [":oci_go_image_lib"],
-    visibility = ["//visibility:public"],
-)
+# go_binary(
+#     name = "app",
+#     embed = [":oci_go_image_lib"],
+#     visibility = ["//visibility:public"],
+# )
 
 # Put app go_binary into a tar layer.
 tar(
