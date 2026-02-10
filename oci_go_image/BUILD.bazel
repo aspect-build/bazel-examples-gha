@@ -5,13 +5,13 @@ load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@tar.bzl", "mutate", "tar")
 
-go_library(
-    name = "oci_go_image_lib",
-    srcs = ["main.go"],
-    importpath = "github.com/aspect-build/bazel-examples/oci_go_image",
-    visibility = ["//visibility:private"],
-    deps = ["@com_github_google_go_cmp//cmp"],
-)
+# go_library(
+#     name = "oci_go_image_lib",
+#     srcs = ["main.go"],
+#     importpath = "github.com/aspect-build/bazel-examples/oci_go_image",
+#     visibility = ["//visibility:private"],
+#     deps = ["@com_github_google_go_cmp//cmp"],
+# )
 
 go_test(
     name = "oci_go_image_test",
