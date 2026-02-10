@@ -5,13 +5,13 @@ load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@tar.bzl", "mutate", "tar")
 
-go_library(
-    name = "oci_go_image_lib",
-    srcs = ["main.go"],
-    importpath = "github.com/aspect-build/bazel-examples/oci_go_image",
-    visibility = ["//visibility:private"],
-    deps = ["@com_github_google_go_cmp//cmp"],
-)
+# go_library(
+#     name = "oci_go_image_lib",
+#     srcs = ["main.go"],
+#     importpath = "github.com/aspect-build/bazel-examples/oci_go_image",
+#     visibility = ["//visibility:private"],
+#     deps = ["@com_github_google_go_cmp//cmp"],
+# )
 
 go_test(
     name = "oci_go_image_test",
@@ -20,11 +20,11 @@ go_test(
     embed = [":oci_go_image_lib"],
 )
 
-go_binary(
-    name = "app",
-    embed = [":oci_go_image_lib"],
-    visibility = ["//visibility:public"],
-)
+# go_binary(
+#     name = "app",
+#     embed = [":oci_go_image_lib"],
+#     visibility = ["//visibility:public"],
+# )
 
 # Put app go_binary into a tar layer.
 tar(
@@ -95,4 +95,18 @@ oci_push(
         "24h",
     ],
     repository = "ttl.sh/aspect-build/oci_go_image_example",
+)
+
+go_library(
+    name = "oci_go_image_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/aspect-build/bazel-examples/oci_go_image",
+    visibility = ["//visibility:private"],
+    deps = ["@com_github_google_go_cmp//cmp"],
+)
+
+go_binary(
+    name = "oci_go_image",
+    embed = [":oci_go_image_lib"],
+    visibility = ["//visibility:public"],
 )
