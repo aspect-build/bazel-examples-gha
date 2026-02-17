@@ -155,7 +155,7 @@ warming:
     - /etc/aspect/workflows/bin/gitlab_section_end "archive_warming_tars"
   tags:
     - aspect-workflows
-    - aspect-warming
+    - aspect-default
   stage: Aspect Workflows
   rules:
       - if: '$CI_PIPELINE_SOURCE == "schedule"'

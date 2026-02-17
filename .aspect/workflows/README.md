@@ -59,12 +59,12 @@ steps:
       rosetta run warming
       /etc/aspect/workflows/bin/warming_archive
     agents:
-      queue: aspect-warming
+      queue: aspect-default
 ```
 
 The warming pipeline is not configured to trigger on commits or PRs. Instead, it is triggered
-by a Buildkite pipeline schedule with the cron interval `0 1 * * 1-5 America/Los_Angeles`. It
-runs nightly on weekdays to create up-to-date warming archives containing cached external repositories.
+by a Buildkite pipeline schedule with the cron interval `0 1 * * 1-5 America/Los_Angeles`
+(run nightly on weekdays) to create up-to-date warming archives containing cached external repositories.
 The most recent warming archive is restored during bootstrap of the "default" runner group to speed up
 the first build on cold runners.
 

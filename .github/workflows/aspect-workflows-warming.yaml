@@ -16,7 +16,7 @@ on:
 jobs:
     warming-archive:
         name: Aspect Workflows Warming
-        runs-on: [self-hosted, aspect-workflows, aspect-warming]
+        runs-on: [self-hosted, aspect-workflows, aspect-default]
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env
