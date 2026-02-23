@@ -20,6 +20,8 @@ concurrency:
 jobs:
     gazelle:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
+        env:
+            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env
@@ -41,6 +43,8 @@ jobs:
 
     buildifier:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
+        env:
+            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env
@@ -65,6 +69,7 @@ jobs:
         env:
             # GITHUB_PR_HEAD_SHA required for Checks and Suggested Fixes
             GITHUB_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env
@@ -88,6 +93,8 @@ jobs:
 
     format:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
+        env:
+            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env
@@ -111,6 +118,8 @@ jobs:
 
     test_0:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
+        env:
+            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env
@@ -134,6 +143,8 @@ jobs:
 
     test_1:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
+        env:
+            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env
@@ -159,6 +170,8 @@ jobs:
         if: github.ref_name == 'main'
         needs: [test_0, test_1]
         runs-on: [self-hosted, aspect-workflows, aspect-default]
+        env:
+            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
             - name: Workflows environment
               run: /etc/aspect/workflows/bin/configure_workflows_env

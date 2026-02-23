@@ -14,6 +14,8 @@ steps:
       exit_status: -1
   agents:
     queue: aspect-default
+  env:
+    ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
   command: |
     echo "--- :aspect-build: Workflows environment"
     /etc/aspect/workflows/bin/configure_workflows_env
@@ -41,6 +43,8 @@ steps:
       exit_status: -1
   agents:
     queue: aspect-default
+  env:
+    ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
   command: |
     echo "--- :aspect-build: Workflows environment"
     /etc/aspect/workflows/bin/configure_workflows_env
@@ -68,6 +72,8 @@ steps:
       exit_status: -1
   agents:
     queue: aspect-default
+  env:
+    ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
   command: |
     echo "--- :aspect-build: Workflows environment"
     /etc/aspect/workflows/bin/configure_workflows_env
@@ -95,6 +101,8 @@ steps:
       exit_status: -1
   agents:
     queue: aspect-default
+  env:
+    ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
   command: |
     echo "--- :aspect-build: Workflows environment"
     /etc/aspect/workflows/bin/configure_workflows_env
@@ -122,6 +130,8 @@ steps:
       exit_status: -1
   agents:
     queue: aspect-default
+  env:
+    ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
   command: |
     echo "--- :aspect-build: Workflows environment"
     /etc/aspect/workflows/bin/configure_workflows_env
@@ -150,6 +160,8 @@ steps:
       exit_status: -1
   agents:
     queue: aspect-default
+  env:
+    ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
   command: |
     echo "--- :aspect-build: Workflows environment"
     /etc/aspect/workflows/bin/configure_workflows_env
@@ -179,6 +191,8 @@ steps:
       exit_status: -1
   agents:
     queue: aspect-default
+  env:
+    ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
   command: |
     echo "--- :aspect-build: Workflows environment"
     /etc/aspect/workflows/bin/configure_workflows_env
