@@ -29,15 +29,9 @@ with the following yaml steps:
 ```
 steps:
   - label: ":aspect: Upload .aspect/workflows/buildkite.yaml"
-    commands:
-      - buildkite-agent pipeline upload .aspect/workflows/buildkite.yaml
-    plugins:
-      - git-ssh-checkout#v0.4.1
-      - sparse-checkout#v1.3.1:
-          paths:
-            - .aspect
     agents:
       queue: bk-small
+    command: buildkite-agent pipeline upload .aspect/workflows/buildkite.yaml
 ```
 
 This uploads the Buildkite pipeline defined in [.aspect/workflows/buildkite.yaml](./buildkite.yaml).
@@ -50,7 +44,9 @@ configured with the following yaml steps:
 ```
 steps:
   - label: ":fire: Create warming archives"
-    commands: |
+    agents:
+      queue: aspect-default
+    command: |
       echo "--- :aspect-build: Workflows environment"
       /etc/aspect/workflows/bin/configure_workflows_env
       echo "--- :stethoscope: Agent health check"
@@ -58,8 +54,6 @@ steps:
       echo "--- :bazel: Create warming archive for ."
       rosetta run warming
       /etc/aspect/workflows/bin/warming_archive
-    agents:
-      queue: aspect-default
 ```
 
 The warming pipeline is not configured to trigger on commits or PRs. Instead, it is triggered
