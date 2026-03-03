@@ -9,6 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func Add(a, b int) int {
+	return a + b
+}
+
 func main() {
 	cmd := &cobra.Command{
 		Run: func(cmd *cobra.Command, args []string) {
