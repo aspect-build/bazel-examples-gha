@@ -106,7 +106,7 @@ go_library(
 )
 
 go_binary(
-    name = "oci_go_image",
+    name = "app",
     embed = [":oci_go_image_lib"],
     visibility = ["//visibility:public"],
 )
