@@ -29,8 +29,10 @@ tasks:
       rules:
         - deliverable: 'kind("oci_push rule", //...)'
           condition:
+            only_on_change: false
             branches:
               - '^main$'
               - '^release-.*$'
+              - test_delivery
 notifications:
   github: {}
