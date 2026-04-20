@@ -8,14 +8,14 @@ def test_moo():
 
 def test_name():
     app = Cow("John")
-    assert app.name == "Jane"
+    assert app.name == "John"
 
 
 def test_name2():
     app = Cow("John")
-    assert app.name == "Joan"
+    assert app.name == "John"
 
 
 def test_name3():
     app = Cow("John")
-    assert app.name == "Johnny"
+    assert app.name == "John"
