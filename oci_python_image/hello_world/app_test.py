@@ -13,3 +13,7 @@ def test_name():
 def test_name2():
     app = Cow("John")
     assert app.name == "Joan"
+
+def test_name3():
+    app = Cow("John")
+    assert app.name == "Johnny"
