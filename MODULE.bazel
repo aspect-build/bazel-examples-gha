@@ -1,15 +1,5 @@
 "Declare dependencies for bzlmod, see https://bazel.build/build/bzlmod"
 
-# Override aspect_rules_lint with post-2.5.0 main branch (commit 6212ae6)
-# which fixes CcInfo/cc_common not being global in Bazel 9 (fix: Load `CcInfo` and `cc_common` #841)
-# Remove once a new release is published to BCR with this fix.
-archive_override(
-    module_name = "aspect_rules_lint",
-    integrity = "sha256-Q3XG7OiYtJDDhPRGXaNvh3ouDWisAKl/G0YgQYH4T38=",
-    strip_prefix = "rules_lint-6212ae6a98e97781c060bbbaba7eb0e12f0c1f69",
-    urls = ["https://github.com/aspect-build/rules_lint/archive/6212ae6a98e97781c060bbbaba7eb0e12f0c1f69.tar.gz"],
-)
-
 include("//tools:tools.MODULE.bazel")
 include("//tools:jvm.MODULE.bazel")
 include("//tools:python.MODULE.bazel")

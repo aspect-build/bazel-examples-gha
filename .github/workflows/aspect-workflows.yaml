@@ -13,26 +13,20 @@ concurrency:
     group: concurrency-group::${{ github.workflow }}::${{ github.event.pull_request.number > 0 && format('pr-{0}', github.event.pull_request.number) || github.ref_name }}${{ github.ref_name == 'main' && format('::{0}', github.run_id) || ''}}
     cancel-in-progress: ${{ github.ref_name != 'main' }}
 
-# NB: Setting RUNNER_TRACKER_ID="" in the Agent health check sets prevents GitHub Actions from
-# killing the Bazel server started during health check when "Cleaning up orphan processes" in the
-# "Complete job" step. See https://github.com/actions/runner/issues/598 for more info.
+# Migrated from `rosetta run <task>` to `aspect <task>`.
+# See https://docs.aspect.build/cli/migration for details.
+# Task configuration lives in .aspect/config.axl; CLI version pinned in .aspect/version.axl.
 
 jobs:
     gazelle:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
-        env:
-            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
-            - name: Workflows environment
-              run: /etc/aspect/workflows/bin/configure_workflows_env
             - name: Clone repo
               uses: actions/checkout@v4
-            - name: Agent health check
-              run: RUNNER_TRACKING_ID="" && /etc/aspect/workflows/bin/agent_health_check
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts
             - name: Gazelle
-              run: rosetta run gazelle
+              run: aspect gazelle --check
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v4
@@ -43,19 +37,13 @@ jobs:
 
     buildifier:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
-        env:
-            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
-            - name: Workflows environment
-              run: /etc/aspect/workflows/bin/configure_workflows_env
             - name: Clone repo
               uses: actions/checkout@v4
-            - name: Agent health check
-              run: RUNNER_TRACKING_ID="" && /etc/aspect/workflows/bin/agent_health_check
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts
             - name: Buildifier
-              run: rosetta run buildifier
+              run: bazel run //:buildifier.check
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v4
@@ -69,20 +57,15 @@ jobs:
         env:
             # GITHUB_PR_HEAD_SHA required for Checks and Suggested Fixes
             GITHUB_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
-            - name: Workflows environment
-              run: /etc/aspect/workflows/bin/configure_workflows_env
             - name: Clone repo
               uses: actions/checkout@v4
               with:
                   fetch-depth: 2
-            - name: Agent health check
-              run: RUNNER_TRACKING_ID="" && /etc/aspect/workflows/bin/agent_health_check
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts
             - name: Lint
-              run: rosetta run lint
+              run: aspect lint //...
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v4
@@ -93,21 +76,15 @@ jobs:
 
     format:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
-        env:
-            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
-            - name: Workflows environment
-              run: /etc/aspect/workflows/bin/configure_workflows_env
             - name: Clone repo
               uses: actions/checkout@v4
               with:
                   fetch-depth: 2
-            - name: Agent health check
-              run: RUNNER_TRACKING_ID="" && /etc/aspect/workflows/bin/agent_health_check
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts
             - name: Format
-              run: rosetta run format
+              run: aspect format
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v4
@@ -118,19 +95,13 @@ jobs:
 
     test_0:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
-        env:
-            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
-            - name: Workflows environment
-              run: /etc/aspect/workflows/bin/configure_workflows_env
             - name: Clone repo
               uses: actions/checkout@v4
-            - name: Agent health check
-              run: RUNNER_TRACKING_ID="" && /etc/aspect/workflows/bin/agent_health_check
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts /workflows/testlogs
             - name: Test
-              run: rosetta run test_0
+              run: aspect test --task-key=test_0 -- //... -//angular/... -//speller/...
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v4
@@ -143,19 +114,13 @@ jobs:
 
     test_1:
         runs-on: [self-hosted, aspect-workflows, aspect-default]
-        env:
-            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
-            - name: Workflows environment
-              run: /etc/aspect/workflows/bin/configure_workflows_env
             - name: Clone repo
               uses: actions/checkout@v4
-            - name: Agent health check
-              run: RUNNER_TRACKING_ID="" && /etc/aspect/workflows/bin/agent_health_check
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts /workflows/testlogs
             - name: Test
-              run: rosetta run test_1
+              run: aspect test --task-key=test_1 -- //angular/...
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v4
@@ -170,23 +135,15 @@ jobs:
         if: github.ref_name == 'main'
         needs: [test_0, test_1]
         runs-on: [self-hosted, aspect-workflows, aspect-default]
-        env:
-            ASPECT_WORKFLOWS_CONFIG: .aspect/workflows/config.yaml
         steps:
-            - name: Workflows environment
-              run: /etc/aspect/workflows/bin/configure_workflows_env
             - name: Clone repo
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-            - name: Agent health check
-              run: RUNNER_TRACKING_ID="" && /etc/aspect/workflows/bin/agent_health_check
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts
-            - name: Delivery manifest
-              run: rosetta run delivery_manifest
             - name: Delivery
-              run: rosetta run delivery
+              run: aspect delivery
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v4
