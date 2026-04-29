@@ -5,4 +5,4 @@ class Cow:
         self.name = name
 
     def say_hello(self):
-        cowsay.cow("why is this slow?")
+        cowsay.cow("hello py_image_layer!")

@@ -10,12 +10,22 @@ ecosystem.
 """
 
 # keep-sorted start
-bazel_dep(name = "aspect_rules_py", version = "1.3.1")
-bazel_dep(name = "rules_mypy", version = "0.40.0")
+bazel_dep(name = "aspect_rules_py", version = "1.11.2")
+bazel_dep(name = "rules_mypy", version = "0.41.0")
 bazel_dep(name = "rules_python", version = "0.40.0")
 bazel_dep(name = "rules_python_gazelle_plugin", version = "0.40.0")
 bazel_dep(name = "rules_uv", version = "0.25.0")
 # keep-sorted end
+
+# rules_mypy 0.41.0 not yet on BCR; pull straight from GitHub. Required for
+# Bazel 9 compatibility (loads PyInfo from rules_python instead of relying on
+# the removed builtin).
+archive_override(
+    module_name = "rules_mypy",
+    integrity = "sha256-uhIkx1Nv3GeQCa6yclkT1Agp7W54cMOntK3dMFtb5Zc=",
+    strip_prefix = "rules_mypy-0.41.0",
+    urls = ["https://github.com/theoremlp/rules_mypy/archive/refs/tags/v0.41.0.tar.gz"],
+)
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 

@@ -7,6 +7,14 @@ https://github.com/bazelbuild/rules_jvm_external#pinning-artifacts-and-integrati
 bazel_dep(name = "rules_java", version = "8.6.1")
 bazel_dep(name = "rules_jvm_external", version = "6.9")
 
+# Forced newer than transitive 0.1.7 (which used builtin JavaInfo, removed
+# in Bazel 9). Cross compatibility levels via single_version_override.
+bazel_dep(name = "bazel_jar_jar", version = "0.1.15")
+single_version_override(
+    module_name = "bazel_jar_jar",
+    version = "0.1.15",
+)
+
 # In the Maven support variation, the dependencies are conveniently listed here
 # in the MODULE.bazel file.
 

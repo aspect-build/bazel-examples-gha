@@ -3,10 +3,13 @@ Hermetic C++ toolchain, to relieve the dependency on a locally installed CC etc.
 """
 
 # keep-sorted start
-bazel_dep(name = "googletest", version = "1.15.2")
+bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_cc", version = "0.1.1")
-bazel_dep(name = "sqlite3", version = "3.42.0.bcr.1")  # C code for SQLite.
-bazel_dep(name = "toolchains_llvm", version = "1.1.2")
+# Forced newer than transitive 0.10.1 (which still uses the removed
+# `incompatible_use_toolchain_transition` rule arg under Bazel 9).
+bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
+bazel_dep(name = "sqlite3", version = "3.51.2.bcr.1")  # C code for SQLite.
+bazel_dep(name = "toolchains_llvm", version = "1.7.0")
 # keep-sorted end
 
 #########################
@@ -21,4 +24,9 @@ llvm.toolchain(
 )
 use_repo(llvm, "llvm_toolchain", "llvm_toolchain_llvm")
 
-register_toolchains("@llvm_toolchain//:all")
+# On Darwin, prefer the auto-registered apple_support toolchain (which uses
+# the local Xcode/CommandLineTools SDK and resolves libSystem symbols
+# correctly). The hermetic LLVM toolchain ships without a Darwin sysroot,
+# which causes linker failures for symbols like _strtoll/_strtoul under
+# Bazel 9. Registration is moved to .bazelrc with --extra_toolchains so it
+# can be conditioned on the host platform.

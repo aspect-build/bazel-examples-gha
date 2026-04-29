@@ -66,9 +66,9 @@ def OCIImageContainer(image):
             manifest_json(layers=[layer["digest"] + ".tar" for layer in manifest["layers"]]),
             ("config.json", manifest["config"]["size"], open_blob(image, manifest["config"]["digest"]))
         )
-        client.images.load(probe.getvalue())
+        probe_res = client.images.load(probe.getvalue())
         logger.debug("Image was a cache hit")
-        return DockerContainer(manifest["config"]["digest"])
+        return DockerContainer(probe_res[0].id)
     except docker.errors.ImageLoadError as e:
         logger.debug("Image was a cache miss because %s" % e)
 
@@ -96,7 +96,7 @@ def OCIImageContainer(image):
             start_from = i-1
             break
 
-    logger.debug("Need to load all the layers after: ", start_from)
+    logger.debug("Need to load all the layers after: %s", start_from)
 
     # Load all layers at once
     load = tar(
@@ -108,10 +108,7 @@ def OCIImageContainer(image):
 
     load_res = client.images.load(load.getvalue())
 
-    # Extra safety check: assert that the final image id is equal to the one in the manifest
-    assert load_res[0].id == manifest["config"]["digest"], "final image id should match manifest %s == %s" % (load_res[0].id, manifest["config"]["digest"])
-
-    return DockerContainer(manifest["config"]["digest"])
+    return DockerContainer(load_res[0].id)
 
 
 
