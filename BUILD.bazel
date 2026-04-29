@@ -65,6 +65,7 @@ js_library(
     srcs = ["eslint.config.mjs"],
     deps = [
         ":node_modules/@eslint/js",
+        ":node_modules/globals",
         ":node_modules/typescript-eslint",
     ],
 )

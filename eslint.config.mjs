@@ -2,23 +2,23 @@
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import globals from 'globals';
 
 export default tseslint.config(
   eslint.configs.recommended,
   // Skip generated declaration files — they live in bazel-out and have no reachable tsconfig.json
   { ignores: ['**/*.d.ts', '**/genproto/**'] },
   {
-    files: ['**/*.ts'],
-    extends: [
-      ...tseslint.configs.recommendedTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked,
-    ],
+    files: ['**/*.{js,cjs,mjs}'],
     languageOptions: {
-      parserOptions: {
-        // indicates to find the closest tsconfig.json for each source file
-        project: true,
+      globals: {
+        ...globals.node,
       },
     },
+  },
+  {
+    files: ['**/*.ts'],
+    extends: [...tseslint.configs.recommended, ...tseslint.configs.stylistic],
   },
   // Demonstrate override for a subdirectory.
   // Note that unlike eslint 8 and earlier, it does not resolve to a configuration file

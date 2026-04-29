@@ -46,18 +46,17 @@ class ServerLogs {
     el.innerHTML = '';
 
     const jsonData = JSON.parse(JSON.stringify(data));
-    for (let i = 0; i < jsonData.length; i++) {
+    for (const entry of jsonData) {
       const logElement: HTMLDivElement = document.createElement('div');
 
-      let divHTML = '';
-      divHTML += "<b>message:</b> '" + jsonData[i].message;
-      divHTML +=
-        "' received at <b>time:</b> " +
-        this.timestampToString(jsonData[i].time);
-      logElement.innerHTML = divHTML;
+      let entryHTML = '';
+      entryHTML += "<b>message:</b> '" + entry.message;
+      entryHTML +=
+        "' received at <b>time:</b> " + this.timestampToString(entry.time);
+      logElement.innerHTML = entryHTML;
 
       el.appendChild(logElement);
-      console.log(jsonData[i]);
+      console.log(entry);
     }
 
     document.body.appendChild(el);

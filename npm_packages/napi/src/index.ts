@@ -12,9 +12,12 @@ declare interface CNative {
   add: (first: number, second: number) => number;
 }
 
-// Resolve the native.node file relative to this library's location
+// Resolve the native.node file relative to this library's location.
+// Native .node modules can only be loaded via require(), not ES imports.
+/* eslint-disable @typescript-eslint/no-require-imports */
 export const rust: RustNative = require(resolve(
   __dirname,
   'my_native_rust.node'
 ));
 export const c: CNative = require(resolve(__dirname, 'my_native_c.node'));
+/* eslint-enable @typescript-eslint/no-require-imports */
