@@ -5,6 +5,8 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
+  // Skip generated declaration files — they live in bazel-out and have no reachable tsconfig.json
+  { ignores: ['**/*.d.ts', '**/genproto/**'] },
   {
     files: ['**/*.ts'],
     extends: [
