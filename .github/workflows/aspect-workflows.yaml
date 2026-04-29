@@ -61,7 +61,8 @@ jobs:
             - name: Clone repo
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 2
+                  # aspect lint needs origin/main reachable to compute changed files
+                  fetch-depth: 0
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts
             - name: Lint
@@ -80,7 +81,8 @@ jobs:
             - name: Clone repo
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 2
+                  # aspect format needs origin/main reachable to compute changed files
+                  fetch-depth: 0
             - name: Prepare archive directories
               run: rm -rf /workflows/artifacts
             - name: Format
