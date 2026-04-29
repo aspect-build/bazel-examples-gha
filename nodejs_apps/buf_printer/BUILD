@@ -24,7 +24,8 @@ ts_project(
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",
-    visibility = [":__subpackages__"],
+    # eslint lint aspect needs to read this for type-aware rules
+    visibility = ["//visibility:public"],
 )
 
 js_binary(

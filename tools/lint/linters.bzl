@@ -32,6 +32,9 @@ eslint = lint_eslint_aspect(
     configs = [
         "@@//:eslintrc",
         "@@//logger/frontend:tsconfig",
+        "@@//nodejs_apps/buf_printer:tsconfig",
+        "@@//nodejs_apps/typescript:tsconfig",
+        "@@//npm_packages:tsconfig",
     ],
 )
 
