@@ -5,6 +5,7 @@ Hermetic C++ toolchain, to relieve the dependency on a locally installed CC etc.
 # keep-sorted start
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_cc", version = "0.1.1")
+
 # Forced newer than transitive 0.10.1 (which still uses the removed
 # `incompatible_use_toolchain_transition` rule arg under Bazel 9).
 bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
