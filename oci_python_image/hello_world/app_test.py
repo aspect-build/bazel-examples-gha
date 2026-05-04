@@ -7,5 +7,5 @@ def test_moo():
 
 
 def test_name2():
-     app = Cow("John")
+    app = Cow("John")
     assert app.name == "James"
