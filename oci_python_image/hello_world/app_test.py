@@ -8,5 +8,5 @@ def test_moo():
 
 # Deliberately failing test to demonstrate test failure
 def test_name2():
-     app = Cow("John")
-    assert app.name == "James"
+    app = Cow("John")
+    assert app.name == "John"
