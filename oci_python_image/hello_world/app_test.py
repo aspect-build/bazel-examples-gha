@@ -7,6 +7,6 @@ def test_moo():
 
 
 # Deliberately failing test to demonstrate test failure
-# # def test_name2():
-#     app = Cow("John")
-#     assert app.name == "James"
+def test_name2():
+    app = Cow("John")
+    assert app.name == "James"
