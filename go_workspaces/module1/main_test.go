@@ -1,10 +1,11 @@
 package main_test
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestModule(t *testing.T) {
-	assert.Equal(t, 2+2, 4, "two plus two is equal to four")
+	assert.Equal(t, 2+2, 5, "two plus two is equal to four")
 }
